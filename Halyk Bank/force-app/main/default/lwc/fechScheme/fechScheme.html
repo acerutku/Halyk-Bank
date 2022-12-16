@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-grid slds-wrap slds-p-around_small">
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+            <lightning-combobox name="customer_type" label="Customer Type" placeholder="--None--"
+                options={customerOptions} onchange={cusTypeChange} required
+                class="clsFrmFetchSchm"></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+            <lightning-combobox name="deposit_type" label="Deposit Type" placeholder="--None--" options={depTypeOptions}
+                onchange={depTypeChange} required class="clsFrmFetchSchm"></lightning-combobox>
+        </div>
+
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+            <lightning-combobox name="payFreq_type" label="Payout Frequency Type" placeholder="--None--"
+                options={payFreqOptions} onchange={payFreqChange} required class="clsFrmFetchSchm"></lightning-combobox>
+        </div>
+    </div>
+</template>
