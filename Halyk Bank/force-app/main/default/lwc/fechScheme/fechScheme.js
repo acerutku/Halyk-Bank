@@ -14,7 +14,8 @@ export default class FetchScheme extends LightningElement {
     payFreqData
     payFreqOptions = []
     selectedPayFreq = ''
-
+    tenorInMonth = ''
+    tenorInDay = ''
     // fetchCusTypeLocal metotu ile Apex'de yaptığımız sorgu sonucunda Müşterinin Customer type bilgisi alındı ve CUSTOMER TYPE
     @wire(fetchCusTypeLocal, { 
         fdId:'$recordId'
@@ -69,6 +70,27 @@ export default class FetchScheme extends LightningElement {
 
     payFreqChange(event) {
         this.selectedPayFreq = event.detail.value
+    }
+    //Tenor in Month
+    get tenorMonthOptions() {
+        let options = []
+        for (var i = 0; i < 85;i++){
+            options.push({label:i.toString(), value:i.toString()})
+        }
+        return options
+    }
+    tenorMonthChange(event) {
+        this.tenorInMonth = event.detail.value
+    }
+    get tenorDayOptions() {
+        let options = []
+        for (var i = 0; i < 30;i++){
+            options.push({label:i.toString(), value:i.toString()})
+        }
+        return options
+    }
+    tenorDayChange(event) {
+        this.tenorInDay = event.detail.value
     }
 
 }

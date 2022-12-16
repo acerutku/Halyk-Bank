@@ -14,5 +14,15 @@
             <lightning-combobox name="payFreq_type" label="Payout Frequency Type" placeholder="--None--"
                 options={payFreqOptions} onchange={payFreqChange} required class="clsFrmFetchSchm"></lightning-combobox>
         </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+            <lightning-combobox name="tenor_in_month" label="Tenor in Month" placeholder="--None--"
+                options={tenorMonthOptions} onchange={tenorMonthChange} required
+                class="clsFrmFetchSchm"></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+            <lightning-combobox name="tenor_in_days" label="Tenor in Days" placeholder="--None--"
+                options={tenorDayOptions} onchange={tenorDayChange} required
+                class="clsFrmFetchSchm"></lightning-combobox>
+        </div>
     </div>
 </template>
