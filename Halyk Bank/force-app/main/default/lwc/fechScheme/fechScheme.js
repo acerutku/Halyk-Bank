@@ -84,7 +84,7 @@ export default class FetchScheme extends LightningElement {
     }
     get tenorDayOptions() {
         let options = []
-        for (var i = 0; i < 30;i++){
+        for (var i = 0; i < 31;i++){
             options.push({label:i.toString(), value:i.toString()})
         }
         return options
