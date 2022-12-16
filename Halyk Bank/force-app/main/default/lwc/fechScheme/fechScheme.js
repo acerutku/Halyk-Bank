@@ -1,9 +1,11 @@
 import { LightningElement, wire, api } from 'lwc';
 import fetchCusTypeLocal from '@salesforce/apex/SelectSchemeController.fetchCusType';
+import interestSchmFetch from '@salesforce/apex/SelectSchemeController.fetchShemes';
 import { getPicklistValues, getObjectInfo } from 'lightning/uiObjectInfoApi';
 import FdDetailLocal from '@salesforce/schema/FD_Detail__c';
 import depTypeLocal from '@salesforce/schema/FD_Detail__c.Deposit_Type__c';
 import payFreqLocal from '@salesforce/schema/FD_Detail__c.Payout_Frequency__c';
+
 
 export default class FetchScheme extends LightningElement {
     @api recordId
@@ -17,7 +19,8 @@ export default class FetchScheme extends LightningElement {
     tenorInMonth = ''
     tenorInDay = ''
     fdAmount = 0
-    listScheme= []
+    listScheme = []
+
     // fetchCusTypeLocal metotu ile Apex'de yaptığımız sorgu sonucunda Müşterinin Customer type bilgisi alındı ve CUSTOMER TYPE
     @wire(fetchCusTypeLocal, { 
         fdId:'$recordId'
@@ -27,7 +30,7 @@ export default class FetchScheme extends LightningElement {
             options.push({ label: data.Customer_Type__c, value: data.Customer_Type__c })
             this.customerOptions = options;
         } else if (error) {
-            console.log('Customer Type bilgisi alinirken bir hata oluştu. Hata mesaji: ' + JSON.stringify(error));
+            console.log('Customer Type bilgisi alınırken bir hata oluştu. Hata mesajı: ' + JSON.stringify(error));
         }
     }
     cusTypeChange(event) {
@@ -66,14 +69,15 @@ export default class FetchScheme extends LightningElement {
             this.payFreqData = data
 
         } else if (error) {
-            console.log('Fayout Frequency bilgisi alinirken bir hata oluştu. Hata mesaji: ' + JSON.stringify(error));
+            console.log('Fayout Frequency bilgisi alınırken bir hata oluştu. Hata mesajı: ' + JSON.stringify(error));
         }
     };
 
     payFreqChange(event) {
         this.selectedPayFreq = event.detail.value
     }
-    //Tenor in Month
+
+    // Tenor in Month
     get tenorMonthOptions() {
         let options = []
         for (var i = 0; i < 85;i++){
@@ -81,35 +85,42 @@ export default class FetchScheme extends LightningElement {
         }
         return options
     }
+
     tenorMonthChange(event) {
         this.tenorInMonth = event.detail.value
     }
+
+    // Tenor in Days
     get tenorDayOptions() {
         let options = []
-        for (var i = 0; i < 31;i++){
+        for (var i = 0; i < 30;i++){
             options.push({label:i.toString(), value:i.toString()})
         }
         return options
     }
+
     tenorDayChange(event) {
         this.tenorInDay = event.detail.value
     }
-    //FD amount
-    fdAmountChange(event){
+
+    // FD Amount
+    fdAmountChange(event) {
         this.fdAmount = event.detail.value
     }
-    //Fech Scheme button
-    fetchScheme(event){
+
+    // Fetch Scheme Button
+    fetchScheme(event) {
         let isValid = true;
         let inputFields = this.template.querySelectorAll('.clsFrmFetchSchm');
         inputFields.forEach(inputField => {
-            if(!inputField.checkValidity()){
+            // Validation Hatası var, isValid=false
+            if (!inputField.checkValidity()) {
                 inputField.reportValidity();
                 isValid = false;
             }
         });
-        //FIELD VALIDATION OK
-        if(isValid){
+    // Field Validation OK
+        if (isValid) {
             interestSchmFetch({
                 cusType:this.selectedCusType,
                 depType:this.selectedDepType,
@@ -119,8 +130,8 @@ export default class FetchScheme extends LightningElement {
                 fdId:this.recordId
             }).then(result => {
                 var lstSchm = []
-                if(result){
-                    for(var i=0; i< result.length; i++){
+                if (result) {
+                    for (var i = 0; i < result.length; i++){
                         var tempObj = {}
                         tempObj.label = result[i].Name
                         tempObj.value = result[i].Id
@@ -130,11 +141,11 @@ export default class FetchScheme extends LightningElement {
                 }
                 this.listScheme = lstSchm
             }).catch(error => {
-                console.log('Scheme Datasi cekilirken hata olustu. Hata Mesaji= '
-                 + error.message)
+                console.log('Scheme Datası çekilirken hata oluştu. Hata Mesajı= ' + error.message)
             })
         }
 
     }
+
 
 }
