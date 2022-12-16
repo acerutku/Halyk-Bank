@@ -16,6 +16,8 @@ export default class FetchScheme extends LightningElement {
     selectedPayFreq = ''
     tenorInMonth = ''
     tenorInDay = ''
+    fdAmount = 0
+    listScheme= []
     // fetchCusTypeLocal metotu ile Apex'de yaptığımız sorgu sonucunda Müşterinin Customer type bilgisi alındı ve CUSTOMER TYPE
     @wire(fetchCusTypeLocal, { 
         fdId:'$recordId'
@@ -91,6 +93,47 @@ export default class FetchScheme extends LightningElement {
     }
     tenorDayChange(event) {
         this.tenorInDay = event.detail.value
+    }
+    //FD amount
+    fdAmountChange(event){
+        this.fdAmount = event.detail.value
+    }
+    //Fech Scheme button
+    fetchScheme(event){
+        let isValid = true;
+        let inputFields = this.template.querySelectorAll('.clsFrmFetchSchm');
+        inputFields.forEach(inputField => {
+            if(!inputField.checkValidity()){
+                inputField.reportValidity();
+                isValid = false;
+            }
+        });
+        //FIELD VALIDATION OK
+        if(isValid){
+            interestSchmFetch({
+                cusType:this.selectedCusType,
+                depType:this.selectedDepType,
+                tnrDay:this.tenorInDay,
+                tnrMonth:this.tenorInMonth,
+                fdAmount:this.fdAmount,
+                fdId:this.recordId
+            }).then(result => {
+                var lstSchm = []
+                if(result){
+                    for(var i=0; i< result.length; i++){
+                        var tempObj = {}
+                        tempObj.label = result[i].Name
+                        tempObj.value = result[i].Id
+                        tempObj.interestRate = result[i].Interest_Rate__c
+                        lstSchm.push(tempObj)
+                    }
+                }
+                this.listScheme = lstSchm
+            }).catch(error => {
+                console.log('Scheme Datasi cekilirken hata olustu. Hata Mesaji= ' + error.message)
+            })
+        }
+
     }
 
 }

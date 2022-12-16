@@ -24,5 +24,26 @@
                 options={tenorDayOptions} onchange={tenorDayChange} required
                 class="clsFrmFetchSchm"></lightning-combobox>
         </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+            <lightning-input type="number" label="FD Amount" required onchange={fdAmountChange} class="clsFrmFetchSchm"
+                max="1000000000">
+            </lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-p-around_small slds-align_absolute-center">
+            <lightning-button variant="brand" label="Fetch Scheme" title="Fetch Scheme" onclick={fetchScheme}
+                class="slds-m-left_x-small"></lightning-button>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+            <lightning-combobox name="fetch_scheme" label="Scheme Options" placeholder="--None--"
+                options={listScheme} onchange={schemeChange} required
+                class="classForSaveButton"></lightning-combobox>
+        </div> 
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small"></div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small">
+            <lightning-input type="number" label="Interest Rate" required disabled
+             value={selectedIntRate} 
+             class="classForSaveButton">
+            </lightning-input>
+        </div>      
     </div>
 </template>
