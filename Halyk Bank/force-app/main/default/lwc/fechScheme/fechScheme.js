@@ -130,7 +130,8 @@ export default class FetchScheme extends LightningElement {
                 }
                 this.listScheme = lstSchm
             }).catch(error => {
-                console.log('Scheme Datasi cekilirken hata olustu. Hata Mesaji= ' + error.message)
+                console.log('Scheme Datasi cekilirken hata olustu. Hata Mesaji= '
+                 + error.message)
             })
         }
 
