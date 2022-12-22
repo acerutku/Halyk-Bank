@@ -5,7 +5,7 @@ import { getPicklistValues, getObjectInfo } from 'lightning/uiObjectInfoApi';
 import FdDetailLocal from '@salesforce/schema/FD_Detail__c';
 import depTypeLocal from '@salesforce/schema/FD_Detail__c.Deposit_Type__c';
 import payFreqLocal from '@salesforce/schema/FD_Detail__c.Payout_Frequency__c';
-
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class FetchScheme extends LightningElement {
     @api recordId
@@ -31,7 +31,7 @@ export default class FetchScheme extends LightningElement {
             options.push({ label: data.Customer_Type__c, value: data.Customer_Type__c })
             this.customerOptions = options;
         } else if (error) {
-            console.log('Customer Type bilgisi alınırken bir hata oluştu. Hata mesajı: ' + JSON.stringify(error));
+            console.log('Customer Type bilgisi alinirken bir hata oluştu. Hata mesaji: ' + JSON.stringify(error));
         }
     }
     cusTypeChange(event) {
@@ -52,7 +52,7 @@ export default class FetchScheme extends LightningElement {
             
             this.depTypeOptions = options;
         } else if (error) {
-            console.log('Deposit Type bilgisi alınırken bir hata oluştu. Hata mesajı: ' + JSON.stringify(error));
+            console.log('Deposit Type bilgisi alinirken bir hata oluştu. Hata mesajı: ' + JSON.stringify(error));
         }
     };
     
@@ -70,7 +70,7 @@ export default class FetchScheme extends LightningElement {
             this.payFreqData = data
 
         } else if (error) {
-            console.log('Fayout Frequency bilgisi alınırken bir hata oluştu. Hata mesajı: ' + JSON.stringify(error));
+            console.log('Fayout Frequency bilgisi alinirken bir hata oluştu. Hata mesaji: ' + JSON.stringify(error));
         }
     };
 
@@ -142,7 +142,7 @@ export default class FetchScheme extends LightningElement {
                 }
                 this.listScheme = lstSchm
             }).catch(error => {
-                console.log('Scheme Datası çekilirken hata oluştu. Hata Mesajı= ' + error.message)
+                console.log('Scheme Datasi çekilirken hata oluştu. Hata Mesaji= ' + error.message)
             })
         }
 
@@ -191,9 +191,22 @@ if (isValid) {
         intRate: this.selectedIntRate,
         schmId: this.selectedIntSchmId
     }).then(result => {
-        console.log('Kaydetme işlemi başarılı')
+            const event = new ShowToastEvent({
+                title: 'Success',
+                message:
+                    'Registration Successfull',
+                variant:'Success'    
+            });
+            this.dispatchEvent(event);
+        
     }).catch(error => {
-        console.log('Scheme Datası çekilirken hata oluştu. Hata Mesajı= ' + error.message)
+        const event = new ShowToastEvent({
+            title: 'Failed',
+            message:
+                'Registration Failed' + error.message,
+            variant:'Error'    
+        });
+        this.dispatchEvent(event);
     })
 }
 }
