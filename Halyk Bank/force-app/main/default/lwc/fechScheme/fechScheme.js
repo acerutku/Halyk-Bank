@@ -20,7 +20,8 @@ export default class FetchScheme extends LightningElement {
     tenorInDay = ''
     fdAmount = 0
     listScheme = []
-
+    selectedIntRate
+    selectedIntSchmId
     // fetchCusTypeLocal metotu ile Apex'de yaptığımız sorgu sonucunda Müşterinin Customer type bilgisi alındı ve CUSTOMER TYPE
     @wire(fetchCusTypeLocal, { 
         fdId:'$recordId'
@@ -146,6 +147,55 @@ export default class FetchScheme extends LightningElement {
         }
 
     }
+    schmeChange(event){
+        var shemeRecId = event.detail.value
+        for(var i = 0; i< this.listScheme.length; i++){
+            if(shemeRecId == this.listScheme[i].value){
+                this.selectedIntRate = this.listScheme[i].interestRate
+                this.selectedIntSchmId = schemeRecId
+            }
+        }
+    }
+ // SAVE BUTTON
+ saveClick(event) {
+    // İlk altı input validation
+let isValid = true;
+let inputFields = this.template.querySelectorAll('.clsFrmFetchSchm');
+inputFields.forEach(inputField => {
+    // Validation Hatası var, isValid=false
+    if (!inputField.checkValidity()) {
+        inputField.reportValidity();
+        isValid = false;
+    }
+});
 
+    // Interest Scheme ve Int Rate Validation
+inputFields = this.template.querySelectorAll('.classForSaveButton');
+inputFields.forEach(inputField => {
+    // Validation Hatası var, isValid=false
+    if (!inputField.checkValidity()) {
+        inputField.reportValidity();
+        isValid = false;
+    }
+});
+
+if (isValid) {
+    // Call Apex Method to update FD Record
+    updateFD({
+        depType:this.selectedDepType,
+        tnrDay:this.tenorInDay,
+        tnrMonth:this.tenorInMonth,
+        fdAmount:this.fdAmount,
+        fdId: this.recordId,
+        payFreq: this.selectedPayFreq,
+        intRate: this.selectedIntRate,
+        schmId: this.selectedIntSchmId
+    }).then(result => {
+        console.log('Kaydetme işlemi başarılı')
+    }).catch(error => {
+        console.log('Scheme Datası çekilirken hata oluştu. Hata Mesajı= ' + error.message)
+    })
+}
+}
 
 }

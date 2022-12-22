@@ -24,4 +24,19 @@ public without sharing class SelectSchemeController {
 
         return listInt;
     }
+    @AuraEnabled
+    public static void updateFD(String depType, Integer tnrDay, Integer tnrMonth, Integer fdAmount, String fdId, String payFreq, Decimal intRate,String schmId){
+
+        FD_Detail__c fdRec = new FD_Detail__c();
+        fdRec.Id = fdId;
+        fdRec.Deposit_Type__c = depType;
+        fdRec.Tenor_in_days__c = tnrDay;
+        fdRec.Tenor_in_months__c = tnrMonth;
+        fdRec.FD_Amount__c = fdAmount;
+        fdRec.Payout_Frequency__c = payFreq;
+        fdRec.Interest_Scheme__c = schmId;
+        fdRec.Interest_Rate__c = intRate;
+
+        update fdRec;
+    }
 }
